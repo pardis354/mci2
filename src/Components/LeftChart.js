@@ -3,9 +3,10 @@ import "./LeftChart.scss";
 import Chart from "./Chart";
 
 function LeftChart(props) {
+
   return (
     <div className="left-chart-component">
-      <Chart />
+      <Chart data={props} parent={"LEFTCHART"}/>
     </div>
   );
 }

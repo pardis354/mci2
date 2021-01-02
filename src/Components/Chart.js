@@ -1,95 +1,127 @@
-import React, { Component } from "react";
-import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-// import './App.css'
+import { toJS } from "mobx";
+import React from "react";
+import "./Chart.scss";
 
-const options = {
-  chart: {
-    type: "column",
-  },
-  title: {
-      text: ''
-  },
-  xAxis: {
-    type: "hour",
-  },
-  yAxis: {
-    title: {
-      text: "",
-    },
-  },
-  legend: {
-    enabled: false,
-  },
-//   plotOptions: {
-//     series: {
-//       pointPadding: 0.4,
-//       borderWidth: 0,
-//       dataLabels: {
-//         enabled: true,
-//         format: "{point.y:.1f}%",
-//       },
-//     },
-//   },
+class Chart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      highs: toJS(this.props.data.highs),
+      lows: toJS(this.props.data.lows),
+      average: [],
+      volume: toJS(this.props.data.volume),
+    };
+  }
 
-  series: [
-    {
-      name: "min",
-      data: [
-        49.9,
-        71.5,
-        106.4,
-        129.2,
-        144.0,
-        176.0,
-        135.6,
-        148.5,
-        216.4,
-        194.1,
-        95.6,
-      ],
-    },
-    {
-      name: "mid",
-      data: [
-        83.6,
-        78.8,
-        98.5,
-        93.4,
-        106.0,
-        84.5,
-        105.0,
-        104.3,
-        91.2,
-        83.5,
-        106.6,
-      ],
-    },
-    {
-      name: "hight",
-      data: [
-        42.4,
-        33.2,
-        34.5,
-        39.7,
-        52.6,
-        75.5,
-        57.4,
-        60.4,
-        47.6,
-        39.1,
-        46.8,
-      ],
-    },
-  ],
-};
+  componentDidMount() {
+    if (this.props.parent === "LEFTCHART") {
+      this.averageCalculator();
+    }
+  }
 
-export default class Chart extends Component {
+  averageCalculator = () => {
+    let highs = this.state.highs;
+    let lows = this.state.lows;
+    let avrg = highs.map(function (num, idx) {
+      return (num + lows[idx]) / 2;
+    });
+    this.setState({ average: avrg });
+  };
+
   render() {
+    const options = {
+      chart: {
+        type: "column",
+      },
+      title: {
+        text: this.props.title,
+      },
+      xAxis: {
+        type: "hour",
+      },
+      yAxis: {
+        title: {
+          text: "",
+        },
+      },
+      plotOptions: {
+        series: {
+          // showCheckbox: true
+        }
+      },
+      legend: {
+        // itemCheckboxStyle: {
+        //   // height: '20px',
+        //   // width:'20px',
+        // }
+      },
+      series: [
+        {
+          name: "max",
+          data: this.state.highs,
+        },
+        {
+          name: "mid",
+          data: this.state.average,
+        },
+        {
+          name: "min",
+          data: this.state.lows,
+        },
+      ],
+    };
+
+    
+    const optionsRight = {
+      chart: {
+        type: "column",
+      },
+      title: {
+        text: this.props.title,
+      },
+      xAxis: {
+        type: "hour",
+      },
+      yAxis: {
+        title: {
+          text: "",
+        },
+      },
+      // legend: {
+      //   enabled: false,
+      // },
+
+
+      plotOptions: {
+        series: {
+          // showCheckbox: true
+        }
+      },
+      legend: {
+        // itemCheckboxStyle: {
+        //   height: '20px',
+        //   width:'20px',
+        // }
+      },
+      series: [
+        {
+          name: "volume",
+          data: this.state.volume,
+        }
+      ],
+    };
+
     return (
-      <div className="App">
-        <HighchartsReact options={options} />
+      <div className="chart-component">
+        {this.props.parent === "LEFTCHART" ? (
+          <HighchartsReact options={options} />
+        ) : (
+          <HighchartsReact options={optionsRight} />
+        )}
       </div>
     );
   }
 }
+
+export default Chart;

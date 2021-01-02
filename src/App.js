@@ -11,13 +11,12 @@ function App(props) {
   const store = viewModel.current;
   return (
     <div className="main-layout">
-      <h1>{store.group}</h1>
       <div className="charts-section">
         <div className="left-chart">
-          <LeftChart />
+          <LeftChart highs={store.highs} lows={store.lows}/>
         </div>
         <div className="right-chart">
-          <RightChart />
+          <RightChart volume={store.volume} />
         </div>
       </div>
       <div className="filter-section">
@@ -28,4 +27,3 @@ function App(props) {
 }
 
 export default observer(App);
-// export default App;
