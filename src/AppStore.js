@@ -14,6 +14,12 @@ export class AppStore {
     makeAutoObservable(this);
     this.fetchHourlyExchange();
     this.fetchHourlyPair();
+
+    setTimeout(() => {
+      localStorage.removeItem("highs");
+      localStorage.removeItem("lows");
+      localStorage.removeItem("volume");
+    }, 3600000);
   }
 
   //   API for the left chart
@@ -26,6 +32,8 @@ export class AppStore {
           for (let i = 0, x = this.leftChartData.length; i < x; i++) {
             this.highs.push(this.leftChartData[i].high);
             this.lows.push(this.leftChartData[i].low);
+            localStorage.setItem('highs', JSON.stringify(this.highs))
+            localStorage.setItem('lows', JSON.stringify(this.lows))
           }
           resolve();
         })
@@ -44,6 +52,7 @@ export class AppStore {
           this.rightChartData = data.data.Data;
           for (let i = 0, x = this.rightChartData.length; i < x; i++) {
             this.volume.push(this.rightChartData[i].volume);
+            localStorage.setItem('volume', JSON.stringify(this.volume))
           }
           resolve();
         })

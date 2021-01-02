@@ -8,9 +8,12 @@ class Chart extends React.Component {
     super(props);
     this.state = {
       highs: toJS(this.props.data.highs),
+      // highs : localStorage.getItem('highs'),
       lows: toJS(this.props.data.lows),
+      // lows: localStorage.getItem('lows'),
       average: [],
       volume: toJS(this.props.data.volume),
+      // volume: localStorage.getItem('volume'),
     };
   }
 
@@ -22,6 +25,8 @@ class Chart extends React.Component {
 
   averageCalculator = () => {
     let highs = this.state.highs;
+    console.log("highshighshighshighs")
+    console.log(highs)
     let lows = this.state.lows;
     let avrg = highs.map(function (num, idx) {
       return (num + lows[idx]) / 2;
@@ -30,6 +35,8 @@ class Chart extends React.Component {
   };
 
   render() {
+    const highs=localStorage.getItem('highs');
+    const lows=localStorage.getItem('lows');
     const options = {
       chart: {
         type: "column",
