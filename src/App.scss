@@ -3,17 +3,27 @@
   width: 100vw;
   background-color: #ccc;
   overflow: hidden;
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
 
-  .charts-section {
+  @media screen and (min-width: 900px) {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-gap: 10px;
-    padding: 10px;
+    grid-template-rows: repeat(2, 1fr);
   }
 
-  .filter-section{
+  .charts-section {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    @media screen and (min-width: 900px) {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-gap: 10px;
+    }
+  }
+
+  .filter-section {
     padding: 0 10px 10px 10px;
   }
 }
